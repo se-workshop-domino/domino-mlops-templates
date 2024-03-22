@@ -81,6 +81,7 @@ def main():
         api_key=inputs.DOMINO_USER_API_KEY,
         host=inputs.DOMINO_API_HOST,
     )
+    
     if inputs.DOMINO_MODEL_OP == "list":
         list_models(domino)
     elif inputs.DOMINO_MODEL_OP == "create":
