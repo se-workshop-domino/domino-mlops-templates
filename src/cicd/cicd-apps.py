@@ -3,7 +3,7 @@ import argparse,os
 from domino import Domino
 
 def parse_args():
-    parser=argparse.ArgumentParser(description="a script to publish Domino Models")
+    parser=argparse.ArgumentParser(description="a script to publish Domino Apps")
     parser.add_argument("DOMINO_MODEL_OP", type=str, help="create, list or update.")
     parser.add_argument("DOMINO_PROJECT_OWNER", type=str, help="Domino Project Owner.")
     parser.add_argument("DOMINO_PROJECT_NAME", type=str, help="Domino Project Name.")
