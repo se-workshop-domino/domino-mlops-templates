@@ -14,8 +14,6 @@ This solution offers a modular end-to-end approach for MLOps within Domino, cove
 - A GitHub account capable of creating environments and adding corresponding variables to them.
 - Understanding of GitHub workflows.
 
-Ensure you have GitHub CLI installed: [GitHub CLI](https://cli.github.com/)
-
 ## Methodology
 
 This project template demonstrates the usage of GitHub Actions workflows for CI/CD and employs Domino Data Planes, representing different dataplanes for different stages of the OPS pipeline.
@@ -25,11 +23,17 @@ For this template project, we would establish three stages in the Domino experim
 ## GitHub
 
 The project utilizes GitHub Actions workflows located in the `.github/workflows/` folder for Jobs, Apps, and Models to deploy them to different hardware tiers, representing various stages of ML pipelines.
-
 Users need to register different environments in the github project and the environment variables representing appropriate hardware tiers for that stage in Domino Data Plane.
+
+![plot](./images/environments.png)
+![plot](./images/environment_variables.png)
+![plot](./images/approvers.png)
+
+
 
 ### Workflow:
 
-1. User creates a branch of the project from the main branch and works on the code using Domino workspaces.
-2. When the user intends to push the code to production, they merge the code to the main branch, triggering the CI/CD pipeline via GitHub Actions workflows.
-3. The approval process from one stage to another involves approving the stage change in the experiment manager and approving it in GitHub as well.
+1. User creates git based project in domino and creates the project in github with production representing the main branch of the project.
+2. User creates a branch of the project from the main branch and works on the code using Domino workspaces.
+3. When the user intends to push the code to production, they merge the code to the main branch, triggering the CI/CD pipeline via GitHub Actions workflows.
+4. The approval process from one stage to another involves approving the stage change in the experiment manager and approving it in GitHub as well.
