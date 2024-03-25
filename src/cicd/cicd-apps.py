@@ -8,7 +8,7 @@ def parse_args():
     parser.add_argument("DOMINO_PROJECT_NAME", type=str, help="Domino Project Name.")
     parser.add_argument("DOMINO_USER_API_KEY", type=str, help="Domino user API Key.")
     parser.add_argument("DOMINO_API_HOST", type=str, help="Domino URL for external or http://nucleus-frontend.domino-platform:80 from a workspace.")
-    parser.add_argument("DOMINO_HARDWARE_TIER", type=str, help="Domino hardware tier for the app")
+    parser.add_argument("DOMINO_HARDWARE_TIER_NAME", type=str, help="Domino hardware tier for the app")
     args=parser.parse_args()
     return args
 
@@ -17,9 +17,7 @@ def app_publish(domino,unpublishRunningApps=True, hardwareTierId=None):
     response = domino.app_publish(unpublishRunningApps, hardwareTierId)
 
     if response.status_code == 200:
-        print(f"{response.status_code}: {response.reason}")
-
-
+        logging.info(f"{response.status_code}: {response.reason}")
     
 def app_unpublish(domino):
     # Un Publlish app
@@ -30,9 +28,9 @@ def app_unpublish(domino):
     
 def main():
     inputs=parse_args()
-    print(inputs.DOMINO_PROJECT_NAME)
-    print(inputs.DOMINO_USER_API_KEY)
-    print(inputs.DOMINO_API_HOST)
+    logging.info(inputs.DOMINO_PROJECT_NAME)
+    logging.info(inputs.DOMINO_USER_API_KEY)
+    logging.info(inputs.DOMINO_API_HOST)
 
     project=  inputs.DOMINO_PROJECT_OWNER + "/" + inputs.DOMINO_PROJECT_NAME
     domino = Domino(
@@ -41,7 +39,7 @@ def main():
         host=inputs.DOMINO_API_HOST,
     )
     if inputs.DOMINO_MODEL_OP == "publish":
-        app_publish(domino, inputs.DOMINO_HARDWARE_TIER)
+        app_publish(domino, inputs.DOMINO_HARDWARE_TIER_NAME)
     elif inputs.DOMINO_MODEL_OP == "unpublish":
         app_unpublish(domino) 
         

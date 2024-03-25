@@ -17,7 +17,7 @@ permissions:
 jobs:
   deploy-dev:
     runs-on: ubuntu-latest
-    environment: 'Development'
+    environment: 'Dev'
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python 3.10
@@ -43,7 +43,7 @@ jobs:
         bash cicd/test_api.sh
   deploy-preprod:
     runs-on: ubuntu-latest
-    environment: 'Pre-Prod'
+    environment: 'Staging'
     needs: deploy-dev
     steps:
     - uses: actions/checkout@v3
@@ -70,7 +70,7 @@ jobs:
         bash cicd/test_api.sh
   deploy-production:
     runs-on: ubuntu-latest
-    environment: 'production'
+    environment: 'Prod'
     needs: deploy-preprod
     steps:
     - uses: actions/checkout@v3
