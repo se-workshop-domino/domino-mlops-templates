@@ -70,7 +70,7 @@ Users need to register different environments in the github project and the envi
         DOMINO_PROJECT_NAME : "Domino Project Name."
         DOMINO_USER_API_KEY : "Domino user API Key."
         DOMINO_API_HOST : "Domino URL"
-        DOMINO_HARDWARE_TIER : Name of the hardware tier."
+        DOMINO_HARDWARE_TIER_ID : "Hardware Tier ID."
 
 ### SECRETS
         DOMINO_USER_API_KEY : "Domino user API Key."
