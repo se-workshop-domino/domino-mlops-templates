@@ -16,9 +16,9 @@ This solution offers a modular end-to-end approach for MLOps within Domino, cove
 
 ## Methodology
 
-This project template demonstrates the usage of GitHub Actions workflows for CI/CD and employs Domino Data Planes, representing different dataplanes for different stages of the OPS pipeline.
+This project template demonstrates the usage of GitHub Actions workflows for CI/CD and employs Domino Data Planes, representing different hardware tier for different stages of the OPS pipeline.
 
-For this template project, we would establish three stages in the Domino experiment manager and create three GitHub environments, each mapping to the corresponding stage in the experiment manager of Domino. Progressing through the CI/CD pipeline involves changing the stage in the experiment manager and approving the stage in GitHub to advance it to the next stage.
+For this template project, we would establish three Dataplanes representing three stages in the Domino experiment manager.We would create three GitHub environments, each mapping to the corresponding stage in the Dataplane and experiment manager of Domino. Progressing through the CI/CD pipeline involves changing the stage in the experiment manager and approving the stage in GitHub to advance the deployment to next stage Dataplane in domino.
 
 ## GitHub
 
@@ -41,7 +41,7 @@ Users need to register different environments in the github project and the envi
 6. The approval process from one stage to another involves approving the stage change in the experiment manager and GitHub, which will deploy the resources to appropriate hardware tier representing the dataplane.
 
 ### ENVVIRONMENT VARIABLES
-    ### JOB
+    JOB
         DOMINO_JOB_OP
         DOMINO_PROJECT_OWNER : "Domino Project Owner"
         DOMINO_PROJECT_NAME : "Domino Project Name"
@@ -52,7 +52,7 @@ Users need to register different environments in the github project and the envi
         DOMINO_JOB_HARDWARE_TIER_NAME" : "Job Hardware Tier Name."
         DOMINO_JOB_ENVIRONMENT_ID : "Environment Id of the Job."
 
-    ### MODELS
+    MODELS
         DOMINO_MODEL_OP : "create, list or update."
         DOMINO_PROJECT_OWNER : "Domino Project Owner."
         DOMINO_PROJECT_NAME : "Domino Project Name."
@@ -65,7 +65,7 @@ Users need to register different environments in the github project and the envi
         DOMINO_HARDWARE_TIER_NAME : Name of the hardware tier."
         DOMINO_ENVIRONMENT_ID : "ID of the model  environment id."
 
-    ### APPS
+    APPS
         DOMINO_PROJECT_OWNER : "Domino Project Owner."
         DOMINO_PROJECT_NAME : "Domino Project Name."
         DOMINO_USER_API_KEY : "Domino user API Key."
