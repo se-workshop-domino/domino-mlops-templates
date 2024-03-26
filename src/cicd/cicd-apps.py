@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 import argparse
 import logging
-from domino import Domino  
+from domino import Domino
+
 
 def parse_args():
     """
@@ -14,10 +15,17 @@ def parse_args():
     parser.add_argument("DOMINO_PROJECT_OWNER", type=str, help="Domino Project Owner.")
     parser.add_argument("DOMINO_PROJECT_NAME", type=str, help="Domino Project Name.")
     parser.add_argument("DOMINO_USER_API_KEY", type=str, help="Domino user API Key.")
-    parser.add_argument("DOMINO_API_HOST", type=str, help="Domino URL for external or http://nucleus-frontend.domino-platform:80 from a workspace.")
-    parser.add_argument("DOMINO_HARDWARE_TIER_ID", type=str, help="Domino hardware tier for the app")
+    parser.add_argument(
+        "DOMINO_API_HOST",
+        type=str,
+        help="Domino URL for external or http://nucleus-frontend.domino-platform:80 from a workspace.",
+    )
+    parser.add_argument(
+        "DOMINO_HARDWARE_TIER_ID", type=str, help="Domino hardware tier for the app"
+    )
     args = parser.parse_args()
     return args
+
 
 def app_publish(domino, hardwareTierId=None):
     """
@@ -27,11 +35,14 @@ def app_publish(domino, hardwareTierId=None):
         domino (Domino): Domino object.
         hardwareTierId (str): Hardware tier ID.
     """
-    
-    response = domino.app_publish(unpublishRunningApps=True, hardwareTierId=hardwareTierId)
+
+    response = domino.app_publish(
+        unpublishRunningApps=True, hardwareTierId=hardwareTierId
+    )
 
     if response.status_code == 200:
         logging.info(f"{response.status_code}: {response.reason}")
+
 
 def app_unpublish(domino):
     """
@@ -45,6 +56,7 @@ def app_unpublish(domino):
 
     if response.status_code == 200:
         logging.info(f"{response.status_code}: {response.reason}")
+
 
 def main():
     """
@@ -71,6 +83,6 @@ def main():
     elif inputs.DOMINO_MODEL_OP == "unpublish":
         app_unpublish(domino)
 
-if __name__ == '__main__':
-    main()
 
+if __name__ == "__main__":
+    main()
