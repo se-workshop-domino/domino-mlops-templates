@@ -156,9 +156,13 @@ def main():
     logging.info(inputs.DOMINO_MODEL_NAME)
 
     start_model_url = f"https://{inputs.DOMINO_API_HOST}/v1/models"
-    project_id = get_project_id(domino_url, project_name, user_api_key)
-
+    domino_url = inputs.DOMINO_API_HOST
     project = inputs.DOMINO_PROJECT_OWNER + "/" + inputs.DOMINO_PROJECT_NAME
+    user_api_key = inputs.DOMINO_USER_API_KEY
+    
+    project_id = get_project_id(domino_url, project, user_api_key)
+
+    
     domino = Domino(
         project,
         api_key=inputs.DOMINO_USER_API_KEY,
@@ -169,7 +173,7 @@ def main():
         list_models(domino)
     elif inputs.DOMINO_MODEL_OP == "create":
         model_start(
-            start_job_url,
+            start_model_url,
             project_id,
             inputs.DOMINO_MODEL_NAME,
             inputs.DOMINO_MODEL_DESC,
