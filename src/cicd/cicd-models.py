@@ -31,6 +31,12 @@ def parse_args():
     parser.add_argument(
         "DOMINO_ENVIRONMENT_ID", type=str, help="ID of the model  environment id."
     )
+    parser.add_argument(
+        "DOMINO_TARGET_STAGE", type=str, help="Target stage of the model."
+    )
+    parser.add_argument(
+        "DOMINO_REVIEWER", type=str, help="Reviewer of the stage change."
+    )        
     args = parser.parse_args()
     return args
 
@@ -65,17 +71,20 @@ def model_exist(domino, model_name):
 def get_owner_id(domino_url, user_api_key):
     logging.info(f"Getting Owner Id for the api key {user_api_key}")
     url = f"https://{domino_url}/v4/users/self"
-    headers = {"Authorization": f"Bearer {user_api_key}"}
+    headers = {"X-Domino-Api-Key": user_api_key}
     response = requests.get(url, headers=headers)
     return response.json()
 
+def get_user_id(domino, username_or_email):
+    userid = domino.get_user_id(username_or_email)
+    return userid
 
 def get_project_id(domino_url, project_name, user_api_key):
     owner_id = get_owner_id(domino_url, user_api_key).get("id")
     logging.info(f"Getting project id for owner id: {owner_id}")
     url = f"https://{domino_url}/v4/projects"
     params = {"name": project_name, "ownerId": owner_id}
-    headers = {"Authorization": f"Bearer {user_api_key}"}
+    headers = {"X-Domino-Api-Key": user_api_key}
     response = requests.get(url, params=params, headers=headers)
     return response.json()
 
@@ -84,7 +93,7 @@ def get_hardware_tier_id(domino_url, user_api_key, hardware_tier_name):
     owner_id = get_owner_id(domino_url, user_api_key).get("id")
     logging.info(f"Getting hardware tier id for owner id: {owner_id}")
     url = f"https://{domino_url}/v4/hardwareTier"
-    headers = {"Authorization": f"Bearer {user_api_key}"}
+    headers = {"X-Domino-Api-Key": user_api_key}
     hardware_tier_list = requests.get(url, headers=headers).json()
     tier_id = next(
         (
@@ -118,7 +127,7 @@ def model_start(
         "isAsync": isAsync,
     }
 
-    headers = {"Authorization": f"Bearer {user_api_key}"}
+    headers = {"X-Domino-Api-Key": user_api_key}
     response = requests.post(start_job_url, headers=headers, json=payload)
     print(response.text)
 
@@ -149,6 +158,22 @@ def publish_revision(domino, model_name, model_desc, model_file, model_func, mod
         environment_id=model_ce,
         description=model_desc,
     )
+
+def review_model(domino,domino_url,user_api_key,model_name, model_version, target_stage, reviewer):
+
+    logging.info(f"review model with name: {model_name}")
+    url = f"https://{domino_url}/api/registeredmodels/v1/{model_name}/versions/{model_version}/reviews"
+
+    headers = {"X-Domino-Api-Key": user_api_key}
+    reviewer_id = get_user_id(domino,reviewer)
+
+    payload = {
+        "targetStage": target_stage,
+        "reviewers": [{"userId": reviewer_id}],
+    }
+
+    response = requests.post(url, headers=headers,json=payload)
+    print(response.text)
 
 
 def main():
@@ -183,6 +208,8 @@ def main():
             inputs.DOMINO_HARDWARE_TIER_NAME,
             inputs.DOMINO_ENVIRONMENT_ID,
             inputs.DOMINO_USER_API_KEY,
+            inputs.DOMINO_TARGET_STAGE,
+            inputs.DOMINO_REVIEWER,
         )
     elif inputs.DOMINO_MODEL_OP == "update":
         publish_revision(
@@ -192,6 +219,8 @@ def main():
             inputs.DOMINO_MODEL_FILE,
             inputs.DOMINO_MODEL_FUNC,
             inputs.DOMINO_MODEL_CE,
+            inputs.DOMINO_TARGET_STAGE,
+            inputs.DOMINO_REVIEWER,
         )
     elif inputs.DOMINO_MODEL_OP == "publish":
         if model_exist(domino, inputs.DOMINO_MODEL_NAME):
@@ -202,6 +231,8 @@ def main():
                 inputs.DOMINO_MODEL_FILE,
                 inputs.DOMINO_MODEL_FUNC,
                 inputs.DOMINO_MODEL_CE,
+                inputs.DOMINO_TARGET_STAGE,
+                inputs.DOMINO_REVIEWER,
             )
         else:
             create_model(

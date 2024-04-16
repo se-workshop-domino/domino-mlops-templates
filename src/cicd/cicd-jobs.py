@@ -39,7 +39,7 @@ def parse_args():
 def get_owner_id(domino_url, user_api_key):
     logging.info(f"Getting Owner Id for the api key {user_api_key}")
     url = f"https://{domino_url}/v4/users/self"
-    headers = {"Authorization": f"Bearer {user_api_key}"}
+    headers = {"X-Domino-Api-Key": user_api_key}
     response = requests.get(url, headers=headers)
     return response.json()
 
@@ -49,7 +49,7 @@ def get_project_id(domino_url, project_name, user_api_key):
     logging.info(f"Getting project id for owner id: {owner_id}")
     url = f"https://{domino_url}/v4/projects"
     params = {"name": project_name, "ownerId": owner_id}
-    headers = {"Authorization": f"Bearer {user_api_key}"}
+    headers = {"X-Domino-Api-Key": user_api_key}
     response = requests.get(url, params=params, headers=headers)
     return response.json()
 
@@ -58,7 +58,7 @@ def get_hardware_tier_id(domino_url, user_api_key, hardware_tier_name):
     owner_id = get_owner_id(domino_url, user_api_key).get("id")
     logging.info(f"Getting hardware tier id for owner id: {owner_id}")
     url = f"https://{domino_url}/v4/hardwareTier"
-    headers = {"Authorization": f"Bearer {user_api_key}"}
+    headers = {"X-Domino-Api-Key": user_api_key}
     hardware_tier_list = requests.get(url, headers=headers).json()
     tier_id = next(
         (
@@ -86,14 +86,14 @@ def job_start(
         "mainRepoGitRef": {"refType": "branches", "value": commit_id},
         "overrideHardwareTierId": get_hardware_tier_id(hardware_tier_name),
     }
-    headers = {"Authorization": f"Bearer {user_api_key}"}
+    headers = {"X-Domino-Api-Key": user_api_key}
     response = requests.post(start_job_url, headers=headers, json=payload)
     print(response.text)
 
 
 def job_stop(stop_job_url, project_id, job_id, user_api_key):
     payload = {"projectId": project_id, "jobId": job_id}
-    headers = {"Authorization": f"Bearer {user_api_key}"}
+    headers = {"X-Domino-Api-Key": user_api_key}
     response = requests.post(stop_job_url, headers=headers, json=payload)
     print(response.text)
 
