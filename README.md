@@ -38,7 +38,7 @@ Users need to register different environments in the github project and the envi
 3. User creates environments in github environments with approvers and corresponding variables and secrets for the environment
 4. User creates a branch of the project from the main branch and works on the code using Domino workspaces.
 5. When the user intends to push the code to production, they merge the code to the main branch, triggering the CI/CD pipeline via GitHub Actions workflows.
-6. The approval process from one stage to another involves approving the stage change in the experiment manager and GitHub, which will deploy the resources to appropriate hardware tier representing the dataplane.
+6. The approval process from one stage to another involves approving the stage change in the experiment manager for model governed by experiment manager and GitHub or If they are jobs , apps it would be by github environments, which will deploy the resources to appropriate hardware tier representing the dataplane.
 
 ### ENVVIRONMENT VARIABLES
     JOB
@@ -64,6 +64,9 @@ Users need to register different environments in the github project and the envi
         DOMINO_MODEL_CE : ID of the model compute environment."
         DOMINO_HARDWARE_TIER_NAME : Name of the hardware tier."
         DOMINO_ENVIRONMENT_ID : "ID of the model  environment id."
+        DOMINO_MODEL_TYPE : "Domino model type based on if its from registry or file. Experiment management = 'registry' or file = 'regular'"
+        DOMINO_TARGET_STAGE : Target stage of the model."
+        DOMINO_REVIEWER : "Reviewer of the stage change."
 
     APPS
         DOMINO_PROJECT_OWNER : "Domino Project Owner."

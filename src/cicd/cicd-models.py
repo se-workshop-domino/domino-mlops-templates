@@ -32,11 +32,17 @@ def parse_args():
         "DOMINO_ENVIRONMENT_ID", type=str, help="ID of the model  environment id."
     )
     parser.add_argument(
+        "DOMINO_MODEL_TYPE",
+        type=str,
+        help="Domino model type based on weather from registry or file .",
+    )
+    parser.add_argument(
         "DOMINO_TARGET_STAGE", type=str, help="Target stage of the model."
     )
     parser.add_argument(
         "DOMINO_REVIEWER", type=str, help="Reviewer of the stage change."
-    )        
+    )
+
     args = parser.parse_args()
     return args
 
@@ -75,9 +81,11 @@ def get_owner_id(domino_url, user_api_key):
     response = requests.get(url, headers=headers)
     return response.json()
 
+
 def get_user_id(domino, username_or_email):
     userid = domino.get_user_id(username_or_email)
     return userid
+
 
 def get_project_id(domino_url, project_name, user_api_key):
     owner_id = get_owner_id(domino_url, user_api_key).get("id")
@@ -108,13 +116,18 @@ def get_hardware_tier_id(domino_url, user_api_key, hardware_tier_name):
 
 def model_start(
     start_job_url,
-    user_api_key,
     project_id,
     model_name,
     model_desc,
     model_file,
     model_func,
+    model_ce,
     hardware_tier_name,
+    environment_id,
+    user_api_key,
+    model_type,
+    model_target_stage,
+    model_reviewer,
     isAsync=False,
 ):
     payload = {
@@ -146,11 +159,24 @@ def create_model(domino, model_name, model_desc, model_file, model_func, model_c
     logging.info(published_model)
 
 
-def publish_revision(domino, model_name, model_desc, model_file, model_func, model_ce):
+def publish_revision(
+    domino,
+    domino_url,
+    user_api_key,
+    model_name,
+    model_desc,
+    model_file,
+    model_func,
+    model_ce,
+    model_type,
+    target_stage,
+    reviewer,
+):
     models = domino.models_list()
     for i in models["data"]:
         if i["name"] == model_name:
             published_model_id = i["id"]
+
     another_model_version = domino.model_version_publish(
         model_id=published_model_id,
         file=model_file,
@@ -159,21 +185,39 @@ def publish_revision(domino, model_name, model_desc, model_file, model_func, mod
         description=model_desc,
     )
 
-def review_model(domino,domino_url,user_api_key,model_name, model_version, target_stage, reviewer):
+    if model_type == EXPERIMENT_MANAGEMENT_MODEL_TYPE:
+        review_model(
+            domino,
+            domino_url,
+            user_api_key,
+            model_name,
+            another_model_version,
+            target_stage,
+            reviewer,
+        )
+
+
+def review_model(
+    domino, domino_url, user_api_key, model_name, model_version, target_stage, reviewer
+):
 
     logging.info(f"review model with name: {model_name}")
     url = f"https://{domino_url}/api/registeredmodels/v1/{model_name}/versions/{model_version}/reviews"
 
     headers = {"X-Domino-Api-Key": user_api_key}
-    reviewer_id = get_user_id(domino,reviewer)
+    reviewer_id = get_user_id(domino, reviewer)
 
     payload = {
         "targetStage": target_stage,
         "reviewers": [{"userId": reviewer_id}],
     }
 
-    response = requests.post(url, headers=headers,json=payload)
+    response = requests.post(url, headers=headers, json=payload)
     print(response.text)
+
+
+EXPERIMENT_MANAGEMENT_MODEL_TYPE = "registry"
+REGULAR_MODEL_TYPE = "regular"
 
 
 def main():
@@ -184,10 +228,9 @@ def main():
     domino_url = inputs.DOMINO_API_HOST
     project = inputs.DOMINO_PROJECT_OWNER + "/" + inputs.DOMINO_PROJECT_NAME
     user_api_key = inputs.DOMINO_USER_API_KEY
-    
+
     project_id = get_project_id(domino_url, project, user_api_key)
 
-    
     domino = Domino(
         project,
         api_key=inputs.DOMINO_USER_API_KEY,
@@ -208,17 +251,21 @@ def main():
             inputs.DOMINO_HARDWARE_TIER_NAME,
             inputs.DOMINO_ENVIRONMENT_ID,
             inputs.DOMINO_USER_API_KEY,
+            inputs.DOMINO_MODEL_TYPE,
             inputs.DOMINO_TARGET_STAGE,
             inputs.DOMINO_REVIEWER,
         )
     elif inputs.DOMINO_MODEL_OP == "update":
         publish_revision(
             domino,
+            domino_url,
+            user_api_key,
             inputs.DOMINO_MODEL_NAME,
             inputs.DOMINO_MODEL_DESC,
             inputs.DOMINO_MODEL_FILE,
             inputs.DOMINO_MODEL_FUNC,
             inputs.DOMINO_MODEL_CE,
+            inputs.DOMINO_MODEL_TYPE,
             inputs.DOMINO_TARGET_STAGE,
             inputs.DOMINO_REVIEWER,
         )
@@ -226,11 +273,14 @@ def main():
         if model_exist(domino, inputs.DOMINO_MODEL_NAME):
             publish_revision(
                 domino,
+                domino_url,
+                user_api_key,
                 inputs.DOMINO_MODEL_NAME,
                 inputs.DOMINO_MODEL_DESC,
                 inputs.DOMINO_MODEL_FILE,
                 inputs.DOMINO_MODEL_FUNC,
                 inputs.DOMINO_MODEL_CE,
+                inputs.DOMINO_MODEL_TYPE,
                 inputs.DOMINO_TARGET_STAGE,
                 inputs.DOMINO_REVIEWER,
             )
