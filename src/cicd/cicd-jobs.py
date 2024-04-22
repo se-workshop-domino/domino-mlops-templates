@@ -3,6 +3,7 @@ import argparse
 import logging
 import os
 import requests
+from domino import Domino
 
 
 def parse_args():
@@ -63,7 +64,7 @@ def get_hardware_tier_id(domino_url, user_api_key, hardware_tier_name):
     tier_id = next(
         (
             tier["id"]
-            for tier in hardware_tier_list.get("hardwareTiers")
+            for tier in hardware_tier_list
             if tier["name"] == hardware_tier_name
         ),
         None,
@@ -72,30 +73,22 @@ def get_hardware_tier_id(domino_url, user_api_key, hardware_tier_name):
 
 
 def job_start(
-    start_job_url,
-    project_id,
+    domino,
     command,
-    commit_id,
-    hardware_tier_name,
+    hardware_tier_id,
     environment_id,
-    user_api_key,
 ):
-    payload = {
-        "projectId": project_id,
-        "runCommand": command,
-        "mainRepoGitRef": {"refType": "branches", "value": commit_id},
-        "overrideHardwareTierId": get_hardware_tier_id(start_job_url,user_api_key,hardware_tier_name),
-    }
-    headers = {"X-Domino-Api-Key": user_api_key}
-    response = requests.post(start_job_url, headers=headers, json=payload)
-    print(response.text)
+
+    response = domino.jobstart(
+        command,
+        hardware_tier_name=hardware_tier_id,
+        environment_id=environment_id,
+    )
+    print("job id :: ", response.id)
 
 
-def job_stop(stop_job_url, project_id, job_id, user_api_key):
-    payload = {"projectId": project_id, "jobId": job_id}
-    headers = {"X-Domino-Api-Key": user_api_key}
-    response = requests.post(stop_job_url, headers=headers, json=payload)
-    print(response.text)
+def job_stop(domino, job_id):
+    domino.job_stop(job_id)
 
 
 def main():
@@ -103,27 +96,28 @@ def main():
     logging.info(inputs.DOMINO_PROJECT_NAME)
     logging.info(inputs.DOMINO_USER_API_KEY)
     logging.info(inputs.DOMINO_API_HOST)
-    start_job_url = f"https://{inputs.DOMINO_API_HOST}/v4/jobs/start"
-    stop_job_url = f"https://{inputs.DOMINO_API_HOST}/v4/jobs/stop"
-    project_name = f"{inputs.DOMINO_PROJECT_OWNER}/{inputs.DOMINO_PROJECT_NAME}"
-    project_id = get_project_id(
-        inputs.DOMINO_API_HOST, project_name, inputs.DOMINO_USER_API_KEY
+    domino_url = inputs.DOMINO_API_HOST
+
+    project = f"{inputs.DOMINO_PROJECT_OWNER}/{inputs.DOMINO_PROJECT_NAME}"
+    domino = Domino(
+        project,
+        api_key=inputs.DOMINO_USER_API_KEY,
+        host=inputs.DOMINO_API_HOST,
     )
 
     if inputs.DOMINO_JOB_OP == "start":
         job_start(
-            start_job_url,
-            project_id,
+            domino,
             inputs.DOMINO_JOB_COMMAND,
-            inputs.DOMINO_JOB_COMMIT_ID,
-            inputs.DOMINO_JOB_HARDWARE_TIER_NAME,
+            get_hardware_tier_id(
+                domino_url,
+                inputs.DOMINO_USER_API_KEY,
+                inputs.DOMINO_JOB_HARDWARE_TIER_NAME,
+            ),
             inputs.DOMINO_JOB_ENVIRONMENT_ID,
-            inputs.DOMINO_USER_API_KEY,
         )
     elif inputs.DOMINO_JOB_OP == "stop":
-        job_stop(
-            stop_job_url, project_id, inputs.DOMINO_JOB_ID, inputs.DOMINO_USER_API_KEY
-        )
+        job_stop(domino, inputs.DOMINO_JOB_ID)
 
 
 if __name__ == "__main__":

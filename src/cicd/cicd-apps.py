@@ -57,6 +57,7 @@ def app_unpublish(domino):
     if response.status_code == 200:
         logging.info(f"{response.status_code}: {response.reason}")
 
+
 def get_hardware_tier_id(domino_url, user_api_key, hardware_tier_name):
     owner_id = get_owner_id(domino_url, user_api_key).get("id")
     logging.info(f"Getting hardware tier id for owner id: {owner_id}")
@@ -72,6 +73,7 @@ def get_hardware_tier_id(domino_url, user_api_key, hardware_tier_name):
         None,
     )
     return tier_id
+
 
 def main():
     """
@@ -93,7 +95,9 @@ def main():
         host=inputs.DOMINO_API_HOST,
     )
 
-    hardware_tier_id = get_hardware_tier_id(inputs.DOMINO_API_HOST, inputs.DOMINO_USER_API_KEY, inputs.DOMINO_HARDWARE_TIER)
+    hardware_tier_id = get_hardware_tier_id(
+        inputs.DOMINO_API_HOST, inputs.DOMINO_USER_API_KEY, inputs.DOMINO_HARDWARE_TIER
+    )
 
     if inputs.DOMINO_MODEL_OP == "publish":
         app_publish(domino, hardware_tier_id)
