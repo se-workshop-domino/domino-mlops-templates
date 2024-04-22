@@ -49,7 +49,9 @@ Users need to register different environments in the github project and the envi
         DOMINO_JOB_COMMAND : "Command to run for the job. Command format: 'main.py arg1 arg2'."
         DOMINO_JOB_ID" : "JOB ID to stop the Job."
         DOMINO_JOB_COMMIT_ID" : "Commit Id of the project."
-        DOMINO_JOB_HARDWARE_TIER_NAME" : "Job Hardware Tier Name."
+        DOMINO_HARDWARE_TIER_DEV : Name of the hardware tier for dev environment."
+        DOMINO_HARDWARE_TIER_STAGE : Name of the hardware tier for stage environment."
+        DOMINO_HARDWARE_TIER_PROD : Name of the hardware tier for prod environment."
         DOMINO_JOB_ENVIRONMENT_ID : "Environment Id of the Job."
 
     MODELS
@@ -62,7 +64,9 @@ Users need to register different environments in the github project and the envi
         DOMINO_MODEL_FILE : "Name of the model file."
         DOMINO_MODEL_FUNC : Name of the model function."
         DOMINO_MODEL_CE : ID of the model compute environment."
-        DOMINO_HARDWARE_TIER_NAME : Name of the hardware tier."
+        DOMINO_HARDWARE_TIER_DEV : Name of the hardware tier for dev environment."
+        DOMINO_HARDWARE_TIER_STAGE : Name of the hardware tier for stage environment."
+        DOMINO_HARDWARE_TIER_PROD : Name of the hardware tier for prod environment."
         DOMINO_ENVIRONMENT_ID : "ID of the model  environment id."
         DOMINO_MODEL_TYPE : "Domino model type based on if its from registry or file. Experiment management = 'registry' or file = 'regular'"
         DOMINO_TARGET_STAGE : Target stage of the model."
@@ -73,7 +77,9 @@ Users need to register different environments in the github project and the envi
         DOMINO_PROJECT_NAME : "Domino Project Name."
         DOMINO_USER_API_KEY : "Domino user API Key."
         DOMINO_API_HOST : "Domino URL"
-        DOMINO_HARDWARE_TIER_ID : "Hardware Tier ID."
+        DOMINO_HARDWARE_TIER_DEV : Name of the hardware tier for dev environment."
+        DOMINO_HARDWARE_TIER_STAGE : Name of the hardware tier for stage environment."
+        DOMINO_HARDWARE_TIER_PROD : Name of the hardware tier for prod environment."
 
 ### SECRETS
         DOMINO_USER_API_KEY : "Domino user API Key."

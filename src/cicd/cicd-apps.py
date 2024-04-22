@@ -21,7 +21,7 @@ def parse_args():
         help="Domino URL for external or http://nucleus-frontend.domino-platform:80 from a workspace.",
     )
     parser.add_argument(
-        "DOMINO_HARDWARE_TIER_ID", type=str, help="Domino hardware tier for the app"
+        "DOMINO_HARDWARE_TIER", type=str, help="Domino hardware tier for the app"
     )
     args = parser.parse_args()
     return args
@@ -57,6 +57,21 @@ def app_unpublish(domino):
     if response.status_code == 200:
         logging.info(f"{response.status_code}: {response.reason}")
 
+def get_hardware_tier_id(domino_url, user_api_key, hardware_tier_name):
+    owner_id = get_owner_id(domino_url, user_api_key).get("id")
+    logging.info(f"Getting hardware tier id for owner id: {owner_id}")
+    url = f"https://{domino_url}/v4/hardwareTier"
+    headers = {"X-Domino-Api-Key": user_api_key}
+    hardware_tier_list = requests.get(url, headers=headers).json()
+    tier_id = next(
+        (
+            tier["id"]
+            for tier in hardware_tier_list
+            if tier["name"] == hardware_tier_name
+        ),
+        None,
+    )
+    return tier_id
 
 def main():
     """
@@ -78,8 +93,10 @@ def main():
         host=inputs.DOMINO_API_HOST,
     )
 
+    hardware_tier_id = get_hardware_tier_id(inputs.DOMINO_API_HOST, inputs.DOMINO_USER_API_KEY, inputs.DOMINO_HARDWARE_TIER)
+
     if inputs.DOMINO_MODEL_OP == "publish":
-        app_publish(domino, inputs.DOMINO_HARDWARE_TIER_ID)
+        app_publish(domino, hardware_tier_id)
     elif inputs.DOMINO_MODEL_OP == "unpublish":
         app_unpublish(domino)
 
