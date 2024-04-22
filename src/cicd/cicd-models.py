@@ -136,7 +136,7 @@ def model_start(
         "description": model_desc,
         "file": model_file,
         "function": model_func,
-        "hardwareTierId": get_hardware_tier_id(hardware_tier_name),
+        "hardwareTierId": get_hardware_tier_id(start_job_url,user_api_key,hardware_tier_name),
         "isAsync": isAsync,
     }
 

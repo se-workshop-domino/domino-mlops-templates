@@ -84,7 +84,7 @@ def job_start(
         "projectId": project_id,
         "runCommand": command,
         "mainRepoGitRef": {"refType": "branches", "value": commit_id},
-        "overrideHardwareTierId": get_hardware_tier_id(hardware_tier_name),
+        "overrideHardwareTierId": get_hardware_tier_id(start_job_url,user_api_key,hardware_tier_name),
     }
     headers = {"X-Domino-Api-Key": user_api_key}
     response = requests.post(start_job_url, headers=headers, json=payload)
