@@ -12,6 +12,7 @@ def parse_args():
         argparse.Namespace: Parsed arguments.
     """
     parser = argparse.ArgumentParser(description="A script to publish Domino Apps")
+    parser.add_argument("DOMINO_MODEL_OP", type=str, help="Domino Model Operation")
     parser.add_argument("DOMINO_PROJECT_OWNER", type=str, help="Domino Project Owner.")
     parser.add_argument("DOMINO_PROJECT_NAME", type=str, help="Domino Project Name.")
     parser.add_argument("DOMINO_USER_API_KEY", type=str, help="Domino user API Key.")
