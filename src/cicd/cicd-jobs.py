@@ -84,7 +84,7 @@ def job_start(
         hardware_tier_name=hardware_tier_id,
         environment_id=environment_id,
     )
-    print("job id :: ", response.id)
+    print("job id :: ", response)
 
 
 def job_stop(domino, job_id):
