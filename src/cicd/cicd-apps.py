@@ -2,6 +2,7 @@
 import argparse
 import logging
 from domino import Domino
+import requests
 
 
 def parse_args():
@@ -57,6 +58,15 @@ def app_unpublish(domino):
 
     if response.status_code == 200:
         logging.info(f"{response.status_code}: {response.reason}")
+
+
+
+def get_owner_id(domino_url, user_api_key):
+    logging.info(f"Getting Owner Id for the api key {user_api_key}")
+    url = f"https://{domino_url}/v4/users/self"
+    headers = {"X-Domino-Api-Key": user_api_key}
+    response = requests.get(url, headers=headers)
+    return response.json()
 
 
 def get_hardware_tier_id(domino_url, user_api_key, hardware_tier_name):
