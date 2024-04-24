@@ -79,7 +79,7 @@ def job_start(
     environment_id,
 ):
 
-    response = domino.jobstart(
+    response = domino.job_start(
         command,
         hardware_tier_name=hardware_tier_id,
         environment_id=environment_id,
