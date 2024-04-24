@@ -109,11 +109,7 @@ def main():
         job_start(
             domino,
             inputs.DOMINO_JOB_COMMAND,
-            get_hardware_tier_id(
-                domino_url,
-                inputs.DOMINO_USER_API_KEY,
-                inputs.DOMINO_JOB_HARDWARE_TIER_NAME,
-            ),
+            inputs.DOMINO_JOB_HARDWARE_TIER_NAME,
             inputs.DOMINO_JOB_ENVIRONMENT_ID,
         )
     elif inputs.DOMINO_JOB_OP == "stop":
