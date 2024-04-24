@@ -64,7 +64,7 @@ def get_hardware_tier_id(domino_url, user_api_key, hardware_tier_name):
     tier_id = next(
         (
             tier["id"]
-            for tier in hardware_tier_list
+            for tier in hardware_tier_list.get("hardwareTiers")
             if tier["name"] == hardware_tier_name
         ),
         None,
