@@ -103,7 +103,7 @@ def main():
     domino = Domino(
         project,
         api_key=inputs.DOMINO_USER_API_KEY,
-        host=inputs.DOMINO_API_HOST,
+        host=f"https://{inputs.DOMINO_API_HOST}",
     )
 
     hardware_tier_id = get_hardware_tier_id(
