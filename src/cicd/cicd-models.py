@@ -254,7 +254,7 @@ def main():
 
     start_model_url = f"https://{inputs.DOMINO_API_HOST}/v1/models"
     domino_url = inputs.DOMINO_API_HOST
-    project = inputs.DOMINO_PROJECT_OWNER + "/" + inputs.DOMINO_PROJECT_NAME
+    project = inputs.DOMINO_PROJECT_NAME
     user_api_key = inputs.DOMINO_USER_API_KEY
 
     project_id = get_project_id(domino_url, project, user_api_key)
