@@ -254,11 +254,11 @@ def main():
 
     start_model_url = f"https://{inputs.DOMINO_API_HOST}/v1/models"
     domino_url = inputs.DOMINO_API_HOST
-    project = inputs.DOMINO_PROJECT_NAME
+    project = inputs.DOMINO_PROJECT_OWNER + "/" + inputs.DOMINO_PROJECT_NAME
     user_api_key = inputs.DOMINO_USER_API_KEY
 
-    project_id = get_project_id(domino_url, project, user_api_key)
-    print(project_id)
+    project_id = get_project_id(domino_url, inputs.DOMINO_PROJECT_NAME, user_api_key)
+    print(project_id.get("id"))
 
     domino = Domino(
         project,
@@ -271,7 +271,7 @@ def main():
     elif inputs.DOMINO_MODEL_OP == "create":
         model_start(
             start_model_url,
-            project_id,
+            project_id.get("id"),
             inputs.DOMINO_MODEL_NAME,
             inputs.DOMINO_MODEL_DESC,
             inputs.DOMINO_MODEL_FILE,
@@ -291,7 +291,7 @@ def main():
             domino,
             domino_url,
             user_api_key,
-            project_id,
+            project_id.get("id"),
             inputs.DOMINO_ENVIRONMENT_ID,
             inputs.DOMINO_MODEL_NAME,
             inputs.DOMINO_MODEL_DESC,
