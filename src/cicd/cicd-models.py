@@ -258,7 +258,7 @@ def main():
     user_api_key = inputs.DOMINO_USER_API_KEY
 
     project_id = get_project_id(domino_url, inputs.DOMINO_PROJECT_NAME, user_api_key)
-    print(project_id.get("id"))
+    print(project_id[0].get("id"))
 
     domino = Domino(
         project,
@@ -271,7 +271,7 @@ def main():
     elif inputs.DOMINO_MODEL_OP == "create":
         model_start(
             start_model_url,
-            project_id.get("id"),
+            project_id[0].get("id"),
             inputs.DOMINO_MODEL_NAME,
             inputs.DOMINO_MODEL_DESC,
             inputs.DOMINO_MODEL_FILE,
@@ -291,7 +291,7 @@ def main():
             domino,
             domino_url,
             user_api_key,
-            project_id.get("id"),
+            project_id[0].get("id"),
             inputs.DOMINO_ENVIRONMENT_ID,
             inputs.DOMINO_MODEL_NAME,
             inputs.DOMINO_MODEL_DESC,
