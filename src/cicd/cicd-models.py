@@ -146,7 +146,7 @@ def model_start(
     print("model_start")
     payload = {
     "projectId": project_id,
-    "name": model_name+model_env,
+    "name": model_name+"_"+model_env,
     "description": model_desc,
     "registeredModelName": model_registered_name,
     "registeredModelVersion": model_registered_version,
