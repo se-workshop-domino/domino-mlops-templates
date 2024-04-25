@@ -266,6 +266,7 @@ def main():
         host=f"https://{inputs.DOMINO_API_HOST}",
     )
 
+    hardware_tier_id = get_hardware_tier_id(domino_url, user_api_key, inputs.DOMINO_HARDWARE_TIER_NAME)
     if inputs.DOMINO_MODEL_OP == "list":
         list_models(domino)
     elif inputs.DOMINO_MODEL_OP == "create":
@@ -278,7 +279,7 @@ def main():
             inputs.DOMINO_MODEL_FUNC,
             inputs.DOMINO_REGISTERED_MODEL_NAME,
             inputs.DOMINO_REGISTERED_MODEL_VERSION,
-            inputs.DOMINO_HARDWARE_TIER_NAME,
+            hardware_tier_id,
             inputs.DOMINO_ENVIRONMENT_ID,
             inputs.DOMINO_USER_API_KEY,
             inputs.DOMINO_MODEL_TYPE,
