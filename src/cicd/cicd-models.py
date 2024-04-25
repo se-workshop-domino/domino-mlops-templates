@@ -209,7 +209,7 @@ def publish_revision(
 
 
     headers = {"X-Domino-Api-Key": user_api_key}
-    response = requests.post(f"https://{domino_url}}/v1/models/{published_model_id}}/versions", headers=headers, json=payload)
+    response = requests.post(f"https://{domino_url}/v1/models/{published_model_id}/versions", headers=headers, json=payload)
 """ 
     if model_type == EXPERIMENT_MANAGEMENT_MODEL_TYPE:
         review_model(
