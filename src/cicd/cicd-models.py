@@ -143,6 +143,7 @@ def model_start(
     model_env,
     isAsync=False,
 ):
+    print("model_start")
     payload = {
     "projectId": project_id,
     "name": model_name+model_env,
@@ -160,6 +161,7 @@ def model_start(
 
     headers = {"X-Domino-Api-Key": user_api_key}
     response = requests.post(start_job_url, headers=headers, json=payload)
+    print(response.text)
 
 
 def create_model(domino, model_name, model_desc, model_file, model_func, model_ce):
