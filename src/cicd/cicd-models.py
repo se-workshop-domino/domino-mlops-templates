@@ -258,6 +258,7 @@ def main():
     user_api_key = inputs.DOMINO_USER_API_KEY
 
     project_id = get_project_id(domino_url, project, user_api_key)
+    print(project_id)
 
     domino = Domino(
         project,
