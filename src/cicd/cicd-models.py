@@ -50,6 +50,9 @@ def parse_args():
     parser.add_argument(
         "DOMINO_REVIEWER", type=str, help="Reviewer of the stage change."
     )
+    parser.add_argument(
+        "DOMINO_MODEL_ENV", type=str, help="model evn to run in."
+    )
 
     args = parser.parse_args()
     return args
@@ -137,11 +140,12 @@ def model_start(
     model_type,
     model_target_stage,
     model_reviewer,
+    model_env,
     isAsync=False,
 ):
     payload = {
     "projectId": project_id,
-    "name": model_name,
+    "name": model_name+model_env,
     "description": model_desc,
     "registeredModelName": model_registered_name,
     "registeredModelVersion": model_registered_version,
@@ -187,6 +191,7 @@ def publish_revision(
     model_type,
     target_stage,
     reviewer,
+    model_env,
 ):
     models = domino.models_list()
     for i in models["data"]:
@@ -276,6 +281,7 @@ def main():
             inputs.DOMINO_MODEL_TYPE,
             inputs.DOMINO_TARGET_STAGE,
             inputs.DOMINO_REVIEWER,
+            inputs.DOMINO_MODEL_ENV,
         )
     elif inputs.DOMINO_MODEL_OP == "update":
         publish_revision(
@@ -293,6 +299,7 @@ def main():
             inputs.DOMINO_MODEL_TYPE,
             inputs.DOMINO_TARGET_STAGE,
             inputs.DOMINO_REVIEWER,
+            inputs.DOMINO_MODEL_ENV,
         )
 
 if __name__ == "__main__":

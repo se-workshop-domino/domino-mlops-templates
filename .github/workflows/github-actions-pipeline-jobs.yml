@@ -38,7 +38,7 @@ jobs:
     - name: Deploy to Domino Dev
       run: |
         python src/cicd/cicd-jobs.py ${{ vars.DOMINO_JOB_OP }} ${{ vars.DOMINO_PROJECT_OWNER }}  ${{ vars.DOMINO_PROJECT_NAME }} ${{ secrets.DOMINO_USER_API_KEY }} ${{ vars.DOMINO_API_HOST }} ${{ vars.DOMINO_JOB_COMMAND }} ${{ vars.DOMINO_JOB_ID }} ${{ vars.DOMINO_JOB_COMMIT_ID }} ${{ vars.DOMINO_HARDWARE_TIER_DEV }} ${{ vars.DOMINO_JOB_ENVIRONMENT_ID }}
-  deploy-preprod:
+  deploy-staging:
     runs-on: ubuntu-latest
     environment: 'Staging'
     needs: deploy-dev
@@ -65,7 +65,7 @@ jobs:
   deploy-production:
     runs-on: ubuntu-latest
     environment: 'Prod'
-    needs: deploy-preprod
+    needs: deploy-staging
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python 3.10

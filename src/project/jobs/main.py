@@ -16,11 +16,11 @@ def random_number(start, stop):
 
 
 # Plot the values of random points
-x = random.sample(range(1000), 100)
-xbins = [0, len(x)]
-plt.bar(range(0, 100), x)
-plt.show()
-plt.savefig("results/myHistogramFromPython.png", format="png")
+#x = random.sample(range(1000), 100)
+#xbins = [0, len(x)]
+#plt.bar(range(0, 100), x)
+#plt.show()
+#plt.savefig("results/myHistogramFromPython.png", format="png")
 
 # Generate and save some key statistics to dominostats.json
 # Learn more at https://docs.dominodatalab.com/en/latest/reference/runs/Diagnostic_statistics_with_dominostats.json.html
