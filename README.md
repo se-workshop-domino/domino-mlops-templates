@@ -69,6 +69,8 @@ Users need to register different environments in the github project and the envi
         DOMINO_HARDWARE_TIER_STAGE : Name of the hardware tier for stage environment."
         DOMINO_HARDWARE_TIER_PROD : Name of the hardware tier for prod environment."
         DOMINO_ENVIRONMENT_ID : "ID of the model  environment id."
+        DOMINO_REGISTERED_MODEL_NAME : "Registered model name"
+        DOMINO_REGISTERED_MODEL_VERSION : "Registered model version"
         DOMINO_MODEL_TYPE : "Domino model type based on if its from registry or file. Experiment management = 'registry' or file = 'regular'"
         DOMINO_TARGET_STAGE : Target stage of the model."
         DOMINO_REVIEWER : "Reviewer of the stage change."
