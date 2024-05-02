@@ -78,7 +78,7 @@ def main():
     domino = Domino(
         project,
         api_key=inputs.DOMINO_USER_API_KEY,
-        host=f"https://{env_variables.DOMINO_API_HOST}",
+        host=f"https://{env_variables["DOMINO_API_HOST"]}",
     )
 
     if inputs.DOMINO_JOB_OP == "start":
