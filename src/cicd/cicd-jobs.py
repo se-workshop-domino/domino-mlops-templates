@@ -81,14 +81,14 @@ def main():
         host=f"https://{env_variables['DOMINO_API_HOST']}",
     )
 
-    if inputs.DOMINO_JOB_OP == "start":
+    if env_variables["DOMINO_JOB_OP"] == "start":
         job_start(
             domino,
             env_variables["DOMINO_JOB_COMMAND"],
             env_variables["DOMINO_JOB_HARDWARE_TIER_NAME"],
             env_variables["DOMINO_JOB_ENVIRONMENT_ID"],
         )
-    elif inputs.DOMINO_JOB_OP == "stop":
+    elif env_variables["DOMINO_JOB_OP"] == "stop":
         job_stop(domino, env_variables["DOMINO_JOB_ID"])
 
 
