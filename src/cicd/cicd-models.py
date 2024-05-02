@@ -3,60 +3,11 @@ import argparse, os
 import logging
 from domino import Domino
 import requests
+import utils.read_config as read_config
+import utils.parse_evn_var as parse_evn_var
+import utils.parse_args as parse_args
 
-
-def parse_args():
-    parser = argparse.ArgumentParser(description="a script to publish Domino Models")
-    parser.add_argument("DOMINO_MODEL_OP", type=str, help="create, list or update.")
-    parser.add_argument("DOMINO_PROJECT_OWNER", type=str, help="Domino Project Owner.")
-    parser.add_argument("DOMINO_PROJECT_NAME", type=str, help="Domino Project Name.")
-    parser.add_argument("DOMINO_USER_API_KEY", type=str, help="Domino user API Key.")
-    parser.add_argument(
-        "DOMINO_API_HOST",
-        type=str,
-        help="Domino URL for external or http://nucleus-frontend.domino-platform:80 from a workspace.",
-    )
-    parser.add_argument("DOMINO_MODEL_NAME", type=str, help="Name of the model.")
-    parser.add_argument("DOMINO_MODEL_DESC", type=str, help="Description of the model.")
-    parser.add_argument("DOMINO_MODEL_FILE", type=str, help="Name of the model file.")
-    parser.add_argument(
-        "DOMINO_MODEL_FUNC", type=str, help="Name of the model function."
-    )
-    parser.add_argument(
-        "DOMINO_MODEL_CE", type=str, help="ID of the model compute environment."
-    )
-    parser.add_argument(
-        "DOMINO_HARDWARE_TIER_NAME", type=str, help="Name of the hardware tier."
-    )
-    parser.add_argument(
-        "DOMINO_ENVIRONMENT_ID", type=str, help="ID of the model  environment id."
-    )
-    parser.add_argument(
-        "DOMINO_REGISTERED_MODEL_NAME",
-        type=str,
-        help="Domino register model name from model registry",
-    )
-    parser.add_argument(
-        "DOMINO_REGISTERED_MODEL_VERSION", type=str, help="Domino register model version from model registry."
-    )
-    parser.add_argument(
-        "DOMINO_MODEL_TYPE",
-        type=str,
-        help="Domino model type based on weather from registry or file .",
-    )
-    parser.add_argument(
-        "DOMINO_TARGET_STAGE", type=str, help="Target stage of the model."
-    )
-    parser.add_argument(
-        "DOMINO_REVIEWER", type=str, help="Reviewer of the stage change."
-    )
-    parser.add_argument(
-        "DOMINO_MODEL_ENV", type=str, help="model evn to run in."
-    )
-
-    args = parser.parse_args()
-    return args
-
+env_variables = {}
 
 def list_environments(domino):
     all_available_environments = domino.environments_list()
@@ -250,60 +201,61 @@ REGULAR_MODEL_TYPE = "regular"
 
 def main():
     inputs = parse_args()
-    logging.info(inputs.DOMINO_MODEL_NAME)
+    parse_evn_var(env_variables,inputs.DOMINO_ENV)
+    logging.info(env_variables.DOMINO_MODEL_NAME)
 
-    start_model_url = f"https://{inputs.DOMINO_API_HOST}/v1/models"
-    domino_url = inputs.DOMINO_API_HOST
-    project = inputs.DOMINO_PROJECT_OWNER + "/" + inputs.DOMINO_PROJECT_NAME
+    start_model_url = f"https://{env_variables.DOMINO_API_HOST}/v1/models"
+    domino_url = env_variables.DOMINO_API_HOST
+    project = env_variables.DOMINO_PROJECT_OWNER + "/" + env_variables.DOMINO_PROJECT_NAME
     user_api_key = inputs.DOMINO_USER_API_KEY
 
-    project_id = get_project_id(domino_url, inputs.DOMINO_PROJECT_NAME, user_api_key)
+    project_id = get_project_id(domino_url, env_variables.DOMINO_PROJECT_NAME, user_api_key)
     print(project_id[0].get("id"))
 
     domino = Domino(
         project,
         api_key=inputs.DOMINO_USER_API_KEY,
-        host=f"https://{inputs.DOMINO_API_HOST}",
+        host=f"https://{env_variables.DOMINO_API_HOST}",
     )
 
-    hardware_tier_id = get_hardware_tier_id(domino_url, user_api_key, inputs.DOMINO_HARDWARE_TIER_NAME)
-    if inputs.DOMINO_MODEL_OP == "list":
+    hardware_tier_id = get_hardware_tier_id(domino_url, user_api_key, env_variables.DOMINO_HARDWARE_TIER_NAME)
+    if env_variables.DOMINO_MODEL_OP == "list":
         list_models(domino)
-    elif inputs.DOMINO_MODEL_OP == "create":
+    elif env_variables.DOMINO_MODEL_OP == "create":
         model_start(
             start_model_url,
             project_id[0].get("id"),
-            inputs.DOMINO_MODEL_NAME,
-            inputs.DOMINO_MODEL_DESC,
-            inputs.DOMINO_MODEL_FILE,
-            inputs.DOMINO_MODEL_FUNC,
-            inputs.DOMINO_REGISTERED_MODEL_NAME,
-            inputs.DOMINO_REGISTERED_MODEL_VERSION,
+            env_variables.DOMINO_MODEL_NAME,
+            env_variables.DOMINO_MODEL_DESC,
+            env_variables.DOMINO_MODEL_FILE,
+            env_variables.DOMINO_MODEL_FUNC,
+            env_variables.DOMINO_REGISTERED_MODEL_NAME,
+            env_variables.DOMINO_REGISTERED_MODEL_VERSION,
             hardware_tier_id,
-            inputs.DOMINO_ENVIRONMENT_ID,
+            env_variables.DOMINO_ENVIRONMENT_ID,
             inputs.DOMINO_USER_API_KEY,
-            inputs.DOMINO_MODEL_TYPE,
-            inputs.DOMINO_TARGET_STAGE,
-            inputs.DOMINO_REVIEWER,
-            inputs.DOMINO_MODEL_ENV,
+            env_variables.DOMINO_MODEL_TYPE,
+            env_variables.DOMINO_TARGET_STAGE,
+            env_variables.DOMINO_REVIEWER,
+            inputs.DOMINO_ENV,
         )
-    elif inputs.DOMINO_MODEL_OP == "update":
+    elif env_variables.DOMINO_MODEL_OP == "update":
         publish_revision(
             domino,
             domino_url,
             user_api_key,
             project_id[0].get("id"),
-            inputs.DOMINO_ENVIRONMENT_ID,
-            inputs.DOMINO_MODEL_NAME,
-            inputs.DOMINO_MODEL_DESC,
-            inputs.DOMINO_MODEL_FILE,
-            inputs.DOMINO_MODEL_FUNC,
-            inputs.DOMINO_REGISTERED_MODEL_NAME,
-            inputs.DOMINO_REGISTERED_MODEL_VERSION,
-            inputs.DOMINO_MODEL_TYPE,
-            inputs.DOMINO_TARGET_STAGE,
-            inputs.DOMINO_REVIEWER,
-            inputs.DOMINO_MODEL_ENV,
+            env_variables.DOMINO_ENVIRONMENT_ID,
+            env_variables.DOMINO_MODEL_NAME,
+            env_variables.DOMINO_MODEL_DESC,
+            env_variables.DOMINO_MODEL_FILE,
+            env_variables.DOMINO_MODEL_FUNC,
+            env_variables.DOMINO_REGISTERED_MODEL_NAME,
+            env_variables.DOMINO_REGISTERED_MODEL_VERSION,
+            env_variables.DOMINO_MODEL_TYPE,
+            env_variables.DOMINO_TARGET_STAGE,
+            env_variables.DOMINO_REVIEWER,
+            inputs.DOMINO_ENV,
         )
 
 if __name__ == "__main__":

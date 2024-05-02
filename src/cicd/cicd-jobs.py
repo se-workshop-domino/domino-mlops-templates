@@ -4,37 +4,11 @@ import logging
 import os
 import requests
 from domino import Domino
+import utils.read_config as read_config
+import utils.parse_evn_var as parse_evn_var
+import utils.parse_args as parse_args
 
-
-def parse_args():
-    parser = argparse.ArgumentParser(description="A script to publish Domino Models")
-    parser.add_argument(
-        "DOMINO_JOB_OP", type=str, help="Operation: create, list, or update."
-    )
-    parser.add_argument("DOMINO_PROJECT_OWNER", type=str, help="Domino Project Owner.")
-    parser.add_argument("DOMINO_PROJECT_NAME", type=str, help="Domino Project Name.")
-    parser.add_argument("DOMINO_USER_API_KEY", type=str, help="Domino user API Key.")
-    parser.add_argument(
-        "DOMINO_API_HOST",
-        type=str,
-        help="Domino URL for external or http://nucleus-frontend.domino-platform:80 from a workspace.",
-    )
-    parser.add_argument(
-        "DOMINO_JOB_COMMAND",
-        type=str,
-        help="Command to run for the job. Command format: 'main.py arg1 arg2'.",
-    )
-    parser.add_argument("DOMINO_JOB_ID", type=str, help="JOB ID to stop the Job.")
-    parser.add_argument(
-        "DOMINO_JOB_COMMIT_ID", type=str, help="Commit Id of the project."
-    )
-    parser.add_argument(
-        "DOMINO_JOB_HARDWARE_TIER_NAME", type=str, help="Job Hardware Tier Name."
-    )
-    parser.add_argument(
-        "DOMINO_JOB_ENVIRONMENT_ID", type=str, help="Environment Id of the Job."
-    )
-    return parser.parse_args()
+env_variables = {}
 
 
 def get_owner_id(domino_url, user_api_key):
@@ -93,27 +67,29 @@ def job_stop(domino, job_id):
 
 def main():
     inputs = parse_args()
-    logging.info(inputs.DOMINO_PROJECT_NAME)
-    logging.info(inputs.DOMINO_USER_API_KEY)
-    logging.info(inputs.DOMINO_API_HOST)
-    domino_url = inputs.DOMINO_API_HOST
+    parse_evn_var(env_variables,inputs.DOMINO_ENV)
 
-    project = f"{inputs.DOMINO_PROJECT_OWNER}/{inputs.DOMINO_PROJECT_NAME}"
+    logging.info(env_variables.DOMINO_PROJECT_NAME)
+    logging.info(env_variables.DOMINO_USER_API_KEY)
+    logging.info(env_variables.DOMINO_API_HOST)
+    domino_url = env_variables.DOMINO_API_HOST
+
+    project = f"{env_variables.DOMINO_PROJECT_OWNER}/{env_variables.DOMINO_PROJECT_NAME}"
     domino = Domino(
         project,
         api_key=inputs.DOMINO_USER_API_KEY,
-        host=f"https://{inputs.DOMINO_API_HOST}",
+        host=f"https://{env_variables.DOMINO_API_HOST}",
     )
 
     if inputs.DOMINO_JOB_OP == "start":
         job_start(
             domino,
-            inputs.DOMINO_JOB_COMMAND,
-            inputs.DOMINO_JOB_HARDWARE_TIER_NAME,
-            inputs.DOMINO_JOB_ENVIRONMENT_ID,
+            env_variables.DOMINO_JOB_COMMAND,
+            env_variables.DOMINO_JOB_HARDWARE_TIER_NAME,
+            env_variables.DOMINO_JOB_ENVIRONMENT_ID,
         )
     elif inputs.DOMINO_JOB_OP == "stop":
-        job_stop(domino, inputs.DOMINO_JOB_ID)
+        job_stop(domino, env_variables.DOMINO_JOB_ID)
 
 
 if __name__ == "__main__":
