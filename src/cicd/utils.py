@@ -18,7 +18,7 @@ def parse_args():
 
 def read_config(section, key):
    config = configparser.ConfigParser()
-   config.read('./env-variables.ini')
+   config.read('env-variables.ini')
    print(config.sections()) 
    return config[section][key]
 
