@@ -74,11 +74,11 @@ def main():
     logging.info(env_variables["DOMINO_API_HOST"])
     domino_url = env_variables["DOMINO_API_HOST"]
 
-    project = f"{env_variables["DOMINO_PROJECT_OWNER"]}/{env_variables["DOMINO_PROJECT_NAME"]}"
+    project = f"{env_variables['DOMINO_PROJECT_OWNER']}/{env_variables['DOMINO_PROJECT_NAME']}"
     domino = Domino(
         project,
         api_key=inputs.DOMINO_USER_API_KEY,
-        host=f"https://{env_variables["DOMINO_API_HOST"]}",
+        host=f"https://{env_variables['DOMINO_API_HOST']}",
     )
 
     if inputs.DOMINO_JOB_OP == "start":
