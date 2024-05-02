@@ -3,9 +3,9 @@ import argparse, os
 import logging
 from domino import Domino
 import requests
-import utils.read_config as read_config
-import utils.parse_evn_var as parse_evn_var
-import utils.parse_args as parse_args
+from .utils.read_config import read_config as read_config
+from .utils.parse_evn_var import parse_evn_var as parse_evn_var
+from .utils.parse_args import parse_args as parse_args
 
 env_variables = {}
 
