@@ -202,59 +202,59 @@ REGULAR_MODEL_TYPE = "regular"
 def main():
     inputs = parse_args()
     parse_evn_var(env_variables,inputs.DOMINO_ENV)
-    logging.info(env_variables.DOMINO_MODEL_NAME)
+    logging.info(env_variables["DOMINO_MODEL_NAME"])
 
-    start_model_url = f"https://{env_variables.DOMINO_API_HOST}/v1/models"
-    domino_url = env_variables.DOMINO_API_HOST
-    project = env_variables.DOMINO_PROJECT_OWNER + "/" + env_variables.DOMINO_PROJECT_NAME
+    start_model_url = f"https://{env_variables['DOMINO_API_HOST}/v1/models']}"
+    domino_url = env_variables["DOMINO_API_HOST"]
+    project = env_variables["DOMINO_PROJECT_OWNER"] + "/" + env_variables["DOMINO_PROJECT_NAME"]
     user_api_key = inputs.DOMINO_USER_API_KEY
 
-    project_id = get_project_id(domino_url, env_variables.DOMINO_PROJECT_NAME, user_api_key)
+    project_id = get_project_id(domino_url, env_variables["DOMINO_PROJECT_NAME"], user_api_key)
     print(project_id[0].get("id"))
 
     domino = Domino(
         project,
         api_key=inputs.DOMINO_USER_API_KEY,
-        host=f"https://{env_variables.DOMINO_API_HOST}",
+        host=f"https://{env_variables['DOMINO_API_HOST']}",
     )
 
-    hardware_tier_id = get_hardware_tier_id(domino_url, user_api_key, env_variables.DOMINO_HARDWARE_TIER_NAME)
-    if env_variables.DOMINO_MODEL_OP == "list":
+    hardware_tier_id = get_hardware_tier_id(domino_url, user_api_key, env_variables["DOMINO_HARDWARE_TIER_NAME"])
+    if env_variables["DOMINO_MODEL_OP"] == "list":
         list_models(domino)
-    elif env_variables.DOMINO_MODEL_OP == "create":
+    elif env_variables["DOMINO_MODEL_OP"] == "create":
         model_start(
             start_model_url,
             project_id[0].get("id"),
-            env_variables.DOMINO_MODEL_NAME,
-            env_variables.DOMINO_MODEL_DESC,
-            env_variables.DOMINO_MODEL_FILE,
-            env_variables.DOMINO_MODEL_FUNC,
-            env_variables.DOMINO_REGISTERED_MODEL_NAME,
-            env_variables.DOMINO_REGISTERED_MODEL_VERSION,
+            env_variables["DOMINO_MODEL_NAME"],
+            env_variables["DOMINO_MODEL_DESC"],
+            env_variables["DOMINO_MODEL_FILE"],
+            env_variables["DOMINO_MODEL_FUNC"],
+            env_variables["DOMINO_REGISTERED_MODEL_NAME"],
+            env_variables["DOMINO_REGISTERED_MODEL_VERSION"],
             hardware_tier_id,
-            env_variables.DOMINO_ENVIRONMENT_ID,
+            env_variables["DOMINO_ENVIRONMENT_ID"],
             inputs.DOMINO_USER_API_KEY,
-            env_variables.DOMINO_MODEL_TYPE,
-            env_variables.DOMINO_TARGET_STAGE,
-            env_variables.DOMINO_REVIEWER,
+            env_variables["DOMINO_MODEL_TYPE"],
+            env_variables["DOMINO_TARGET_STAGE"],
+            env_variables["DOMINO_REVIEWER"],
             inputs.DOMINO_ENV,
         )
-    elif env_variables.DOMINO_MODEL_OP == "update":
+    elif env_variables["DOMINO_MODEL_OP"] == "update":
         publish_revision(
             domino,
             domino_url,
             user_api_key,
             project_id[0].get("id"),
-            env_variables.DOMINO_ENVIRONMENT_ID,
-            env_variables.DOMINO_MODEL_NAME,
-            env_variables.DOMINO_MODEL_DESC,
-            env_variables.DOMINO_MODEL_FILE,
-            env_variables.DOMINO_MODEL_FUNC,
-            env_variables.DOMINO_REGISTERED_MODEL_NAME,
-            env_variables.DOMINO_REGISTERED_MODEL_VERSION,
-            env_variables.DOMINO_MODEL_TYPE,
-            env_variables.DOMINO_TARGET_STAGE,
-            env_variables.DOMINO_REVIEWER,
+            env_variables["DOMINO_ENVIRONMENT_ID"],
+            env_variables["DOMINO_MODEL_NAME"],
+            env_variables["DOMINO_MODEL_DESC"],
+            env_variables["DOMINO_MODEL_FILE"],
+            env_variables["DOMINO_MODEL_FUNC"],
+            env_variables["DOMINO_REGISTERED_MODEL_NAME"],
+            env_variables["DOMINO_REGISTERED_MODEL_VERSION"],
+            env_variables["DOMINO_MODEL_TYPE"],
+            env_variables["DOMINO_TARGET_STAGE"],
+            env_variables["DOMINO_REVIEWER"],
             inputs.DOMINO_ENV,
         )
 
