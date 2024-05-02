@@ -19,16 +19,12 @@ def parse_args():
 
 def read_config(section, key):
    config = configparser.ConfigParser()
-   print("*****")
    dir_path = os.path.dirname(os.path.realpath(__file__))
-   print(os.path.dirname(os.path.realpath(__file__)))
-   print("*****")
    filepath = dir_path + "/" + "env-variables.ini"
-   if os.path.exists(filepath):
-       print("file exist")
-   print("*****")    
    config.read(filepath)
    print(config.sections()) 
+   for key in config['DEV']:  
+    print(key)
    return config[section][key]
 
 
