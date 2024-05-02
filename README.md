@@ -42,47 +42,7 @@ Users need to register different environments in the github project and the envi
 7. The approval process from one stage to another involves approving the stage change in the experiment manager for model governed by experiment manager and GitHub or If they are jobs , apps it would be by github environments, which will deploy the resources to appropriate hardware tier representing the dataplane.
 
 ### ENVVIRONMENT VARIABLES
-    JOB
-        DOMINO_JOB_OP
-        DOMINO_PROJECT_OWNER : "Domino Project Owner"
-        DOMINO_PROJECT_NAME : "Domino Project Name"
-        DOMINO_API_HOST : "Domino URL."
-        DOMINO_JOB_COMMAND : "Command to run for the job. Command format: 'main.py arg1 arg2'."
-        DOMINO_JOB_ID" : "JOB ID to stop the Job."
-        DOMINO_JOB_COMMIT_ID" : "Commit Id of the project."
-        DOMINO_HARDWARE_TIER_DEV : Name of the hardware tier for dev environment."
-        DOMINO_HARDWARE_TIER_STAGE : Name of the hardware tier for stage environment."
-        DOMINO_HARDWARE_TIER_PROD : Name of the hardware tier for prod environment."
-        DOMINO_JOB_ENVIRONMENT_ID : "Environment Id of the Job."
-
-    MODELS
-        DOMINO_MODEL_OP : "create, list or update."
-        DOMINO_PROJECT_OWNER : "Domino Project Owner."
-        DOMINO_PROJECT_NAME : "Domino Project Name."
-        DOMINO_API_HOST : "Domino URL"
-        DOMINO_MODEL_NAME : "Name of the model."
-        DOMINO_MODEL_DESC : "Description of the model."
-        DOMINO_MODEL_FILE : "Name of the model file."
-        DOMINO_MODEL_FUNC : Name of the model function."
-        DOMINO_MODEL_CE : ID of the model compute environment."
-        DOMINO_HARDWARE_TIER_DEV : Name of the hardware tier for dev environment."
-        DOMINO_HARDWARE_TIER_STAGE : Name of the hardware tier for stage environment."
-        DOMINO_HARDWARE_TIER_PROD : Name of the hardware tier for prod environment."
-        DOMINO_ENVIRONMENT_ID : "ID of the model  environment id."
-        DOMINO_REGISTERED_MODEL_NAME : "Registered model name"
-        DOMINO_REGISTERED_MODEL_VERSION : "Registered model version"
-        DOMINO_MODEL_TYPE : "Domino model type based on if its from registry or file. Experiment management = 'registry' or file = 'regular'"
-        DOMINO_TARGET_STAGE : Target stage of the model."
-        DOMINO_REVIEWER : "Reviewer of the stage change."
-
-    APPS
-        DOMINO_PROJECT_OWNER : "Domino Project Owner."
-        DOMINO_PROJECT_NAME : "Domino Project Name."
-        DOMINO_USER_API_KEY : "Domino user API Key."
-        DOMINO_API_HOST : "Domino URL"
-        DOMINO_HARDWARE_TIER_DEV : Name of the hardware tier for dev environment."
-        DOMINO_HARDWARE_TIER_STAGE : Name of the hardware tier for stage environment."
-        DOMINO_HARDWARE_TIER_PROD : Name of the hardware tier for prod environment."
+    DOMINO_ENV" : "Environment in which the current pipeline is running example DEV, STAGE or PROD"
 
 ### SECRETS
         DOMINO_USER_API_KEY : "Domino user API Key."
