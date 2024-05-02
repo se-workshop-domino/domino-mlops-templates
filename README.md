@@ -23,7 +23,7 @@ For this template project, we would establish three Dataplanes representing thre
 ## GitHub
 
 The project utilizes GitHub Actions workflows located in the `.github/workflows/` folder for Jobs, Apps, and Models to deploy them to different hardware tiers(dataplane), representing various stages of ML pipelines.
-Users need to register different environments in the github project and the environment variables representing appropriate hardware tiers for that stage in Domino Data Plane.
+Users need to register different environments in the github project and the environment variables representing domino environment the pipeline is running.
 
 ![plot](./images/environments.png)
 ![plot](./images/environment_variables.png)
