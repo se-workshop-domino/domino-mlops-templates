@@ -69,10 +69,10 @@ def main():
     inputs = parse_args()
     parse_evn_var(env_variables,inputs.DOMINO_ENV)
 
-    logging.info(env_variables.DOMINO_PROJECT_NAME)
-    logging.info(env_variables.DOMINO_USER_API_KEY)
-    logging.info(env_variables.DOMINO_API_HOST)
-    domino_url = env_variables.DOMINO_API_HOST
+    logging.info(env_variables["DOMINO_PROJECT_NAME"])
+    logging.info(inputs.DOMINO_USER_API_KEY)
+    logging.info(env_variables["DOMINO_API_HOST"])
+    domino_url = env_variables["DOMINO_API_HOST"]
 
     project = f"{env_variables.DOMINO_PROJECT_OWNER}/{env_variables.DOMINO_PROJECT_NAME}"
     domino = Domino(
@@ -84,12 +84,12 @@ def main():
     if inputs.DOMINO_JOB_OP == "start":
         job_start(
             domino,
-            env_variables.DOMINO_JOB_COMMAND,
-            env_variables.DOMINO_JOB_HARDWARE_TIER_NAME,
-            env_variables.DOMINO_JOB_ENVIRONMENT_ID,
+            env_variables["DOMINO_JOB_COMMAND"],
+            env_variables["DOMINO_JOB_HARDWARE_TIER_NAME"],
+            env_variables["DOMINO_JOB_ENVIRONMENT_ID"],
         )
     elif inputs.DOMINO_JOB_OP == "stop":
-        job_stop(domino, env_variables.DOMINO_JOB_ID)
+        job_stop(domino, env_variables["DOMINO_JOB_ID"])
 
 
 if __name__ == "__main__":

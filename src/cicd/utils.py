@@ -22,9 +22,6 @@ def read_config(section, key):
    dir_path = os.path.dirname(os.path.realpath(__file__))
    filepath = dir_path + "/" + "env-variables.ini"
    config.read(filepath)
-   print(config.sections()) 
-   for key in config['DEV']:  
-    print(key)
    return config[section][key]
 
 
