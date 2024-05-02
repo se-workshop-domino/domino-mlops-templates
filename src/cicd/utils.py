@@ -1,4 +1,5 @@
 import configparser
+import os
 import argparse
 
 def parse_args():
@@ -18,6 +19,7 @@ def parse_args():
 
 def read_config(section, key):
    config = configparser.ConfigParser()
+   print(os.path.dirname(os.path.realpath(__file__)))
    config.read('env-variables.ini')
    print(config.sections()) 
    return config[section][key]
