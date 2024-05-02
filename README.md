@@ -45,4 +45,4 @@ Users need to register different environments in the github project and the envi
     DOMINO_ENV" : "Environment in which the current pipeline is running example DEV, STAGE or PROD"
 
 ### SECRETS
-        DOMINO_USER_API_KEY : "Domino user API Key."
+    DOMINO_USER_API_KEY : "Domino user API Key."

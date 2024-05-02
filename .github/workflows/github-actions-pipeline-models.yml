@@ -5,11 +5,11 @@ name: Deploy Domino Model
 
 on:
   push:
-    branches: [ "env-config" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "env-config" ]
+    branches: [ "main" ]
   pull_request_target:
-    branches: [ "env-config" ]  
+    branches: [ "main" ]  
 
 permissions:
   contents: read
