@@ -219,10 +219,10 @@ def main():
 
     start_model_url = f"https://{env_variables['DOMINO_API_HOST']}/v1/models"
     domino_url = env_variables["DOMINO_API_HOST"]
-    project = env_variables["DOMINO_PROJECT_OWNER"] + "/" + env_variables["DOMINO_PROJECT_NAME"]
+    project = env_variables["DOMINO_PROJECT_OWNER"] + "/" + env_variables["DOMINO_MODEL_PROJECT_NAME"]
     user_api_key = inputs.DOMINO_USER_API_KEY
 
-    project_id = get_project_id(domino_url, env_variables["DOMINO_PROJECT_NAME"], user_api_key)
+    project_id = get_project_id(domino_url, env_variables["DOMINO_MODEL_PROJECT_NAME"], user_api_key)
     print(project_id[0].get("id"))
 
     domino = Domino(
