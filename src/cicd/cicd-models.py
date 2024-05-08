@@ -221,6 +221,7 @@ def main():
     domino_url = env_variables["DOMINO_API_HOST"]
     project = env_variables["DOMINO_MODEL_PROJECT_OWNER"] + "/" + env_variables["DOMINO_MODEL_PROJECT_NAME"]
     user_api_key = inputs.DOMINO_USER_API_KEY
+    ca_api_key = inputs.DOMINO_CA_API_KEY
 
     project_id = get_project_id(domino_url, env_variables["DOMINO_MODEL_PROJECT_NAME"], user_api_key)
     print(project_id[0].get("id"))
@@ -246,7 +247,7 @@ def main():
             env_variables["DOMINO_REGISTERED_MODEL_VERSION"],
             hardware_tier_id,
             env_variables["DOMINO_ENVIRONMENT_ID"],
-            inputs.DOMINO_USER_API_KEY,
+            ca_api_key,
             env_variables["DOMINO_MODEL_TYPE"],
             env_variables["DOMINO_TARGET_STAGE"],
             env_variables["DOMINO_REVIEWER"],
