@@ -161,7 +161,7 @@ def publish_revision(
 ):
     models = domino.models_list()
     for i in models["data"]:
-        if i["name"] == model_name:
+        if i["name"] == model_name+"_"+model_env:
             published_model_id = i["id"]
 
     payload = {
