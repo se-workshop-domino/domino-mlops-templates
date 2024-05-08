@@ -235,7 +235,7 @@ def main():
     hardware_tier_id = env_variables["DOMINO_HARDWARE_TIER_NAME"]
     if env_variables["DOMINO_MODEL_OP"] == "list":
         list_models(domino)
-    elif env_variables["DOMINO_MODEL_OP"] == "update" or model_exist(domino, env_variables["DOMINO_MODEL_NAME"]+"_"inputs.DOMINO_ENV) == True:
+    elif env_variables["DOMINO_MODEL_OP"] == "update" or model_exist(domino, env_variables["DOMINO_MODEL_NAME"]+"_"+inputs.DOMINO_ENV) == True:
         publish_revision(
             domino,
             domino_url,
