@@ -13,6 +13,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description="A script to publish Domino Apps")
     parser.add_argument("DOMINO_ENV", type=str, help="Domino Environment")
     parser.add_argument("DOMINO_USER_API_KEY", type=str, help="Domino user API Key.")
+    parser.add_argument("DOMINO_CA_API_KEY", type=str, help="Domino CA API Key.")
 
     args = parser.parse_args()
     return args
