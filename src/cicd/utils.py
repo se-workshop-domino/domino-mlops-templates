@@ -29,6 +29,7 @@ def read_config(section, key):
 def parse_evn_var(env_variables, section):
 
     env_variables["DOMINO_PROJECT_OWNER"] = read_config(section, "domino_project_owner")
+    env_variables["DOMINO_MODEL_PROJECT_OWNER"] = read_config(section, "domino_model_project_owner")
     env_variables["DOMINO_PROJECT_NAME"] = read_config(section, "domino_project_name")
     env_variables["DOMINO_MODEL_PROJECT_NAME"] = read_config(section, "domino_model_project_name")
     env_variables["DOMINO_API_HOST"] = read_config(section, "domino_api_host")
