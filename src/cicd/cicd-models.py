@@ -231,7 +231,7 @@ def main():
         host=f"https://{env_variables['DOMINO_API_HOST']}",
     )
 
-    hardware_tier_id = get_hardware_tier_id(domino_url, user_api_key, env_variables["DOMINO_HARDWARE_TIER_NAME"])
+    hardware_tier_id = env_variables["DOMINO_HARDWARE_TIER_NAME"]
     if env_variables["DOMINO_MODEL_OP"] == "list":
         list_models(domino)
     elif env_variables["DOMINO_MODEL_OP"] == "create":

@@ -60,20 +60,33 @@ def get_project_id(domino_url, project_name, user_api_key):
 
 
 def get_hardware_tier_id(domino_url, user_api_key, hardware_tier_name):
-    owner_id = get_owner_id(domino_url, user_api_key).get("id")
-    logging.info(f"Getting hardware tier id for owner id: {owner_id}")
-    url = f"https://{domino_url}/v4/hardwareTier"
-    headers = {"X-Domino-Api-Key": user_api_key}
-    hardware_tier_list = requests.get(url, headers=headers).json()
-    tier_id = next(
-        (
-            tier["id"]
-            for tier in hardware_tier_list.get("hardwareTiers")
-            if tier["name"] == hardware_tier_name
-        ),
-        None,
-    )
-    return tier_id
+    try:
+        owner_id = get_owner_id(domino_url, user_api_key).get("id")
+        logging.info(f"Getting hardware tier id for owner id: {owner_id}")
+        url = f"https://{domino_url}/v4/hardwareTier"
+        headers = {"X-Domino-Api-Key": user_api_key}
+        
+        response = requests.get(url, headers=headers)
+        print("Response Status Code:", response.status_code)  # Print status code
+        print("Response Text:", response.text)  # Print raw response-text
+
+        hardware_tier_list = response.json()  # Attempt to parse the JSON
+
+        tier_id = next(
+            (
+                tier["id"]
+                for tier in hardware_tier_list.get("hardwareTiers", [])  # Safe access
+                if tier["name"] == hardware_tier_name
+            ),
+            None,
+        )
+        return tier_id
+    except requests.exceptions.RequestException as e:
+        logging.error(f"Request failed: {e}")
+        return None
+    except ValueError as e:
+        logging.error(f"JSON decoding failed: {e}")
+        return None
 
 
 def model_start(
@@ -218,7 +231,7 @@ def main():
         host=f"https://{env_variables['DOMINO_API_HOST']}",
     )
 
-    hardware_tier_id = get_hardware_tier_id(domino_url, user_api_key, env_variables["DOMINO_HARDWARE_TIER_NAME"])
+    hardware_tier_id = env_variables["DOMINO_HARDWARE_TIER_NAME"]
     if env_variables["DOMINO_MODEL_OP"] == "list":
         list_models(domino)
     elif env_variables["DOMINO_MODEL_OP"] == "create":
