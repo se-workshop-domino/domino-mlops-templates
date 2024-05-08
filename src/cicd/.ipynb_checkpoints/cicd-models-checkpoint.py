@@ -235,6 +235,24 @@ def main():
     hardware_tier_id = env_variables["DOMINO_HARDWARE_TIER_NAME"]
     if env_variables["DOMINO_MODEL_OP"] == "list":
         list_models(domino)
+    elif env_variables["DOMINO_MODEL_OP"] == "update" or model_exist(domino, env_variables["DOMINO_MODEL_NAME"]+"_"inputs.DOMINO_ENV) == True:
+        publish_revision(
+            domino,
+            domino_url,
+            ca_api_key,
+            project_id[0].get("id"),
+            env_variables["DOMINO_ENVIRONMENT_ID"],
+            env_variables["DOMINO_MODEL_NAME"],
+            env_variables["DOMINO_MODEL_DESC"],
+            env_variables["DOMINO_MODEL_FILE"],
+            env_variables["DOMINO_MODEL_FUNC"],
+            env_variables["DOMINO_REGISTERED_MODEL_NAME"],
+            env_variables["DOMINO_REGISTERED_MODEL_VERSION"],
+            env_variables["DOMINO_MODEL_TYPE"],
+            env_variables["DOMINO_TARGET_STAGE"],
+            env_variables["DOMINO_REVIEWER"],
+            inputs.DOMINO_ENV,
+        )
     elif env_variables["DOMINO_MODEL_OP"] == "create":
         model_start(
             start_model_url,
@@ -253,24 +271,7 @@ def main():
             env_variables["DOMINO_REVIEWER"],
             inputs.DOMINO_ENV,
         )
-    elif env_variables["DOMINO_MODEL_OP"] == "update":
-        publish_revision(
-            domino,
-            domino_url,
-            user_api_key,
-            project_id[0].get("id"),
-            env_variables["DOMINO_ENVIRONMENT_ID"],
-            env_variables["DOMINO_MODEL_NAME"],
-            env_variables["DOMINO_MODEL_DESC"],
-            env_variables["DOMINO_MODEL_FILE"],
-            env_variables["DOMINO_MODEL_FUNC"],
-            env_variables["DOMINO_REGISTERED_MODEL_NAME"],
-            env_variables["DOMINO_REGISTERED_MODEL_VERSION"],
-            env_variables["DOMINO_MODEL_TYPE"],
-            env_variables["DOMINO_TARGET_STAGE"],
-            env_variables["DOMINO_REVIEWER"],
-            inputs.DOMINO_ENV,
-        )
+    
 
 if __name__ == "__main__":
     main()
